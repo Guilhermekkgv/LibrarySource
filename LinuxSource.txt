@@ -661,7 +661,7 @@ function Linux.Create(config)
             elementOrder = elementOrder + 1
             local Toggle = Linux.Instance("Frame", {
                 Parent = ElementContainer,
-                BackgroundColor3 = Color3.fromRGB(19 serez-vous, 19, 19),
+                BackgroundColor3 = Color3.fromRGB(19, 19, 19),
                 BorderColor3 = Color3.fromRGB(50, 50, 50),
                 BorderSizePixel = 2,
                 Size = UDim2.new(1, -5, 0, 34),
