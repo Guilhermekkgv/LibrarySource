@@ -387,423 +387,19 @@ function Linux.Create(config)
 
     if config.ShowIconProfile ~= false then
         local ProfileFrame = Linux.Instance("Frame", {
-            Parent = TabsBar,
+            Parent = Main,
             BackgroundTransparency = 1,
-            Size = UDim2.new(1, -5, 0, 30),
-            Position = UDim2.new(0, 0, 1, -30),
+            Size = UDim2.new(0, 200, 0, 28),
+            Position = UDim2.new(0, 5, 1, -33),
             ZIndex = 2
         })
 
         local ProfileIcon = Linux.Instance("ImageLabel", {
             Parent = ProfileFrame,
             BackgroundTransparency = 1,
-            Size = UDim2.new(0, 24, 0, 24),
-            Position = UDim2.new(0, 5, 0, 3),
-            Image = Players:GetUserThumbnailAsync(LocalPlayer.User Forgot to include the rest of the code. Continuing from where it was cut off, ensuring the entire code is included without any interruptions. I'll also double-check for any other potential issues that could prevent the Lib from opening, keeping all functionality intact, including `ShowIconProfile`, player icon, and name.
-
-<xaiArtifact artifact_id="1aa73c78-8cb1-486c-bd4b-dc90acbfb842" artifact_version_id="2d50fe5a-5c62-49b3-9bcc-805809c9d670" title="LinuxSource.txt" contentType="text/lua">
-local TweenService = game:GetService("TweenService")
-local InputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
-local Linux = {}
-
-function Linux.Instance(class, props)
-    local inst = Instance.new(class)
-    for k, v in pairs(props or {}) do
-        inst[k] = v
-    end
-    return inst
-end
-
-function Linux:SafeCallback(Function, ...)
-    if not Function then
-        return
-    end
-    local Success, Error = pcall(Function, ...)
-    if not Success then
-        self:Notify({
-            Title = "Callback Error",
-            Content = tostring(Error),
-            Duration = 5
-        })
-    end
-end
-
-function Linux:Notify(config)
-    local isMobile = InputService.TouchEnabled and not InputService.KeyboardEnabled
-    local notificationWidth = isMobile and 200 or 300
-    local notificationHeight = config.SubContent and 80 or 60
-    local startPosX = isMobile and 10 or 20
-
-    local NotificationHolder = Linux.Instance("ScreenGui", {
-        Name = "NotificationHolder",
-        Parent = RunService:IsStudio() and LocalPlayer.PlayerGui or game:GetService("CoreGui"),
-        ResetOnSpawn = false,
-        Enabled = true,
-        ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    })
-
-    local Notification = Linux.Instance("Frame", {
-        Parent = NotificationHolder,
-        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-        BorderColor3 = Color3.fromRGB(255, 255, 255),
-        BorderSizePixel = 2,
-        Size = UDim2.new(0, notificationWidth, 0, notificationHeight),
-        Position = UDim2.new(1, 10, 1, -notificationHeight - 10),
-        ZIndex = 100
-    })
-
-    Linux.Instance("UIGradient", {
-        Parent = Notification,
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 80, 180)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 100))
-        }),
-        Rotation = 45
-    })
-
-    Linux.Instance("UICorner", {
-        Parent = Notification,
-        CornerRadius = UDim.new(0, 5)
-    })
-
-    Linux.Instance("TextLabel", {
-        Parent = Notification,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, -10, 0, 20),
-        Position = UDim2.new(0, 5, 0, 5),
-        Font = Enum.Font.SourceSansBold,
-        Text = config.Title or "Notification",
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 16,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        TextYAlignment = Enum.TextYAlignment.Top,
-        ZIndex = 101
-    })
-
-    Linux.Instance("TextLabel", {
-        Parent = Notification,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, -10, 0, 20),
-        Position = UDim2.new(0, 5, 0, 25),
-        Font = Enum.Font.SourceSans,
-        Text = config.Content or "Content",
-        TextColor3 = Color3.fromRGB(180, 180, 180),
-        TextSize = 14,
-        TextWrapped = true,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        TextYAlignment = Enum.TextYAlignment.Top,
-        ZIndex = 101
-    })
-
-    if config.SubContent then
-        Linux.Instance("TextLabel", {
-            Parent = Notification,
-            BackgroundTransparency = 1,
-            Size = UDim2.new(1, -10, 0, 20),
-            Position = UDim2.new(0, 5, 0, 45),
-            Font = Enum.Font.SourceSans,
-            Text = config.SubContent,
-            TextColor3 = Color3.fromRGB(150, 150, 150),
-            TextSize = 12,
-            TextWrapped = true,
-            TextXAlignment = Enum.TextXAlignment.Left,
-            TextYAlignment = Enum.TextYAlignment.Top,
-            ZIndex = 101
-        })
-    end
-
-    local ProgressBar = Linux.Instance("Frame", {
-        Parent = Notification,
-        BackgroundColor3 = Color3.fromRGB(40, 40, 40),
-        Size = UDim2.new(1, -10, 0, 4),
-        Position = UDim2.new(0, 5, 1, -9),
-        ZIndex = 101,
-        BorderSizePixel = 0
-    })
-
-    Linux.Instance("UICorner", {
-        Parent = ProgressBar,
-        CornerRadius = UDim.new(0, 2)
-    })
-
-    local ProgressFill = Linux.Instance("Frame", {
-        Parent = ProgressBar,
-        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-        Size = UDim2.new(0, 0, 1, 0),
-        ZIndex = 101,
-        BorderSizePixel = 0
-    })
-
-    Linux.Instance("UIGradient", {
-        Parent = ProgressFill,
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 255)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 128, 255))
-        }),
-        Rotation = 45
-    })
-
-    Linux.Instance("UICorner", {
-        Parent = ProgressFill,
-        CornerRadius = UDim.new(0, 2)
-    })
-
-    local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    TweenService:Create(Notification, tweenInfo, {Position = UDim2.new(0, startPosX, 1, -notificationHeight - 10)}):Play()
-
-    if config.Duration then
-        local progressTweenInfo = TweenInfo.new(config.Duration, Enum.EasingStyle.Linear, Enum.EasingDirection.In)
-        TweenService:Create(ProgressFill, progressTweenInfo, {Size = UDim2.new(1, 0, 1, 0)}):Play()
-
-        task.delay(config.Duration, function()
-            TweenService:Create(Notification, tweenInfo, {Position = UDim2.new(1, 10, 1, -notificationHeight - 10)}):Play()
-            task.wait(0.5)
-            NotificationHolder:Destroy()
-        end)
-    end
-end
-
-function Linux.Create(config)
-    local randomName = "UI_" .. tostring(math.random(100000, 999999))
-
-    for _, v in pairs(game.CoreGui:GetChildren()) do
-        if v:IsA("ScreenGui") and v.Name:match("^UI_%d+$") then
-            v:Destroy()
-        end
-    end
-
-    local ProtectGui = protectgui or (syn and syn.protect_gui) or function() end
-
-    local LinuxUI = Linux.Instance("ScreenGui", {
-        Name = randomName,
-        Parent = RunService:IsStudio() and LocalPlayer.PlayerGui or game:GetService("CoreGui"),
-        ResetOnSpawn = false,
-        Enabled = true
-    })
-
-    ProtectGui(LinuxUI)
-
-    local isMobile = InputService.TouchEnabled and not InputService.KeyboardEnabled
-    local uiSize = isMobile and (config.SizeMobile or UDim2.fromOffset(300, 500)) or (config.SizePC or UDim2.fromOffset(550, 355))
-
-    local Main = Linux.Instance("Frame", {
-        Parent = LinuxUI,
-        BackgroundColor3 = Color3.fromRGB(17, 17, 17),
-        BorderColor3 = Color3.fromRGB(255, 255, 255),
-        BorderSizePixel = 2,
-        Size = uiSize,
-        Position = UDim2.new(0.5, -uiSize.X.Offset / 2, 0.5, -uiSize.Y.Offset / 2),
-        Active = true,
-        Draggable = true,
-        ZIndex = 1
-    })
-
-    Linux.Instance("UICorner", {
-        Parent = Main,
-        CornerRadius = UDim.new(0, 5)
-    })
-
-    local TopBar = Linux.Instance("Frame", {
-        Parent = Main,
-        BackgroundColor3 = Color3.fromRGB(17, 17, 17),
-        BorderColor3 = Color3.fromRGB(255, 255, 255),
-        BorderSizePixel = 2,
-        Size = UDim2.new(1, 0, 0, 25),
-        ZIndex = 2
-    })
-
-    Linux.Instance("UICorner", {
-        Parent = TopBar,
-        CornerRadius = UDim.new(0, 5)
-    })
-
-    local TitleLabel = Linux.Instance("TextLabel", {
-        Parent = TopBar,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(0, 0, 1, 0),
-        Position = UDim2.new(0, 5, 0, 0),
-        Font = Enum.Font.SourceSansBold,
-        Text = config.Name or "Linux UI",
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 16,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        AutomaticSize = Enum.AutomaticSize.X,
-        ZIndex = 2
-    })
-
-    if config.ShowBetaLabel ~= false then
-        local BetaLabel = Linux.Instance("Frame", {
-            Parent = TopBar,
-            BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-            BackgroundTransparency = 0,
-            Size = UDim2.new(0, 40, 0, 16),
-            Position = UDim2.new(0, TitleLabel.TextBounds.X + 15, 0, 4),
-            ZIndex = 2
-        })
-
-        local BetaGradient = Linux.Instance("UIGradient", {
-            Parent = BetaLabel,
-            Color = ColorSequence.new({
-                ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 120, 255)),
-                ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 139))
-            }),
-            Rotation = 45
-        })
-
-        Linux.Instance("UICorner", {
-            Parent = BetaLabel,
-            CornerRadius = UDim.new(0, 4)
-        })
-
-        Linux.Instance("TextLabel", {
-            Parent = BetaLabel,
-            BackgroundTransparency = 1,
-            Size = UDim2.new(1, 0, 1, 0),
-            Font = Enum.Font.SourceSansBold,
-            Text = "BETA",
-            TextColor3 = Color3.fromRGB(255, 255, 255),
-            TextSize = 12,
-            TextXAlignment = Enum.TextXAlignment.Center,
-            ZIndex = 2
-        })
-    end
-
-    local ExecutorLabel
-    if config.IdentifyExecutor then
-        local executorName = identifyexecutor and identifyexecutor() or "Invalid Executor"
-        if executorName ~= "Invalid Executor" then
-            ExecutorLabel = Linux.Instance("Frame", {
-                Parent = TopBar,
-                BackgroundColor3 = Color3.fromRGB(28, 28, 28),
-                BackgroundTransparency = 0,
-                Size = UDim2.new(0, 80, 0, 16),
-                Position = UDim2.new(0, TitleLabel.TextBounds.X + (config.ShowBetaLabel ~= false and 60 or 15), 0, 4),
-                ZIndex = 2
-            })
-
-            Linux.Instance("UICorner", {
-                Parent = ExecutorLabel,
-                CornerRadius = UDim.new(0, 4)
-            })
-
-            Linux.Instance("TextLabel", {
-                Parent = ExecutorLabel,
-                BackgroundTransparency = 1,
-                Size = UDim2.new(1, 0, 1, 0),
-                Font = Enum.Font.SourceSansBold,
-                Text = executorName,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                TextSize = 12,
-                TextXAlignment = Enum.TextXAlignment.Center,
-                ZIndex = 2
-            })
-        end
-    end
-
-    local MinimizeButton = Linux.Instance("TextButton", {
-        Parent = TopBar,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(0, 20, 0, 20),
-        Position = UDim2.new(1, -45, 0, 2),
-        Text = "",
-        ZIndex = 3,
-        AutoButtonColor = false
-    })
-
-    local MinimizeIcon = Linux.Instance("ImageLabel", {
-        Parent = MinimizeButton,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(0, 16, 0, 16),
-        Position = UDim2.new(0.5, -8, 0.5, -8),
-        Image = "rbxassetid://10734895698",
-        ImageColor3 = Color3.fromRGB(255, 255, 255),
-        ZIndex = 3
-    })
-
-    local CloseButton = Linux.Instance("TextButton", {
-        Parent = TopBar,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(0, 20, 0, 20),
-        Position = UDim2.new(1, -20, 0, 2),
-        Text = "",
-        ZIndex = 3,
-        AutoButtonColor = false
-    })
-
-    Linux.Instance("ImageLabel", {
-        Parent = CloseButton,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(0, 16, 0, 16),
-        Position = UDim2.new(0.5, -8, 0.5, -8),
-        Image = "rbxassetid://10747384394",
-        ImageColor3 = Color3.fromRGB(255, 255, 255),
-        ZIndex = 3
-    })
-
-    local TabsBar = Linux.Instance("Frame", {
-        Parent = Main,
-        BackgroundTransparency = 1,
-        Position = UDim2.new(0, 0, 0, 25),
-        Size = UDim2.new(0, config.TabWidth or 110, 1, -25),
-        ZIndex = 2,
-        BorderSizePixel = 0
-    })
-
-    local TabHolder = Linux.Instance("ScrollingFrame", {
-        Parent = TabsBar,
-        BackgroundTransparency = 1,
-        Position = UDim2.new(0, 0, 0, 0),
-        Size = UDim2.new(1, 0, 1, 0),
-        CanvasSize = UDim2.new(0, 0, 0, 0),
-        AutomaticCanvasSize = Enum.AutomaticSize.Y,
-        ScrollBarThickness = 0,
-        ZIndex = 2,
-        BorderSizePixel = 0
-    })
-
-    Linux.Instance("UIListLayout", {
-        Parent = TabHolder,
-        Padding = UDim.new(0, 3),
-        HorizontalAlignment = Enum.HorizontalAlignment.Left,
-        VerticalAlignment = Enum.VerticalAlignment.Top,
-        SortOrder = Enum.SortOrder.LayoutOrder
-    })
-
-    Linux.Instance("UIPadding", {
-        Parent = TabHolder,
-        PaddingLeft = UDim.new(0, 5),
-        PaddingTop = UDim.new(0, 5)
-    })
-
-    local Content = Linux.Instance("Frame", {
-        Parent = Main,
-        BackgroundTransparency = 1,
-        Position = UDim2.new(0, config.TabWidth or 110, 0, 25),
-        Size = UDim2.new(1, -(config.TabWidth or 110), 1, -25),
-        ZIndex = 1,
-        BorderSizePixel = 2,
-        BorderColor3 = Color3.fromRGB(50, 50, 50)
-    })
-
-    if config.ShowIconProfile ~= false then
-        local ProfileFrame = Linux.Instance("Frame", {
-            Parent = TabsBar,
-            BackgroundTransparency = 1,
-            Size = UDim2.new(1, -5, 0, 30),
-            Position = UDim2.new(0, 0, 1, -30),
-            ZIndex = 2
-        })
-
-        local ProfileIcon = Linux.Instance("ImageLabel", {
-            Parent = ProfileFrame,
-            BackgroundTransparency = 1,
-            Size = UDim2.new(0, 24, 0, 24),
-            Position = UDim2.new(0, 5, 0, 3),
-            Image = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size48x48),
+            Size = UDim2.new(0, 28, 0, 28),
+            Position = UDim2.new(0, 0, 0, 0),
+            Image = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100),
             ZIndex = 2
         })
 
@@ -812,17 +408,17 @@ function Linux.Create(config)
             CornerRadius = UDim.new(1, 0)
         })
 
-        local PlayerName = Linux.Instance("TextLabel", {
+        Linux.Instance("TextLabel", {
             Parent = ProfileFrame,
             BackgroundTransparency = 1,
-            Size = UDim2.new(0, 0, 0, 24),
-            Position = UDim2.new(0, 34, 0, 3),
+            Size = UDim2.new(0, 150, 0, 28),
+            Position = UDim2.new(0, 33, 0, 0),
             Font = Enum.Font.Gotham,
             Text = LocalPlayer.Name,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextSize = 14,
             TextXAlignment = Enum.TextXAlignment.Left,
-            AutomaticSize = Enum.AutomaticSize.X,
+            TextYAlignment = Enum.TextYAlignment.Center,
             ZIndex = 2
         })
     end
@@ -1381,7 +977,7 @@ function Linux.Create(config)
                                 end
                             end
                             spawn(function() Linux:SafeCallback(config.Callback, opt) end)
-                        end
+                        end)
                     end
                 end
                 UpdateDropSize()
@@ -1746,10 +1342,16 @@ function Linux.Create(config)
                 end
             end
 
-            StartUpdateLoop()
-
             local function SetText(newText)
-                LabelText.Text = tostring(newText)
+                if config.UpdateCallback then
+                    config.Text = tostring(newText)
+                else
+                    LabelText.Text = tostring(newText)
+                end
+            end
+
+            if config.UpdateCallback then
+                StartUpdateLoop()
             end
 
             return {
@@ -1853,46 +1455,61 @@ function Linux.Create(config)
         end
 
         function TabElements.Notification(config)
-                        elementOrder = elementOrder + 1
-            Linux:Notify({
-                Title = config.Title or "Notification",
-                Content = config.Content or "Content",
-                SubContent = config.SubContent,
-                Duration = config.Duration or 5
+            elementOrder = elementOrder + 1
+            local NotificationFrame = Linux.Instance("Frame", {
+                Parent = ElementContainer,
+                BackgroundColor3 = Color3.fromRGB(19, 19, 19),
+                BorderColor3 = Color3.fromRGB(50, 50, 50),
+                BorderSizePixel = 2,
+                Size = UDim2.new(1, -5, 0, 34),
+                ZIndex = 1,
+                LayoutOrder = elementOrder
             })
+
+            Linux.Instance("UICorner", {
+                Parent = NotificationFrame,
+                CornerRadius = UDim.new(0, 4)
+            })
+
+            Linux.Instance("TextLabel", {
+                Parent = NotificationFrame,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(0.5, 0, 1, 0),
+                Position = UDim2.new(0, 5, 0, 0),
+                Font = Enum.Font.Gotham,
+                Text = config.Name,
+                TextColor3 = Color3.fromRGB(180, 180, 180),
+                TextSize = 14,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                ZIndex = 1
+            })
+
+            local NotificationText = Linux.Instance("TextLabel", {
+                Parent = NotificationFrame,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(0.5, -10, 1, 0),
+                Position = UDim2.new(0.5, 5, 0, 0),
+                Font = Enum.Font.Gotham,
+                Text = config.Default or "Notification",
+                TextColor3 = Color3.fromRGB(180, 180, 180),
+                TextSize = 14,
+                TextXAlignment = Enum.TextXAlignment.Right,
+                TextTruncate = Enum.TextTruncate.AtEnd,
+                ZIndex = 1
+            })
+
+            local function SetText(newText)
+                NotificationText.Text = tostring(newText)
+            end
+
+            return {
+                Instance = NotificationFrame,
+                SetText = SetText,
+                GetText = function() return NotificationText.Text end
+            }
         end
 
         return TabElements
-    end
-
-    function LinuxLib:GetActiveTab()
-        return Tabs[CurrentTab]
-    end
-
-    function LinuxLib:SelectTab(index)
-        if Tabs[index] then
-            Tabs[index].Button:FindFirstChildWhichIsA("TextButton").MouseButton1Click:Invoke()
-        end
-    end
-
-    function LinuxLib:Hide()
-        LinuxUI.Enabled = false
-    end
-
-    function LinuxLib:Show()
-        LinuxUI.Enabled = true
-    end
-
-    function LinuxLib:Destroy()
-        LinuxUI:Destroy()
-    end
-
-    function LinuxLib:Toggle()
-        LinuxUI.Enabled = not LinuxUI.Enabled
-    end
-
-    function LinuxLib:Notify(config)
-        Linux:Notify(config)
     end
 
     return LinuxLib
