@@ -347,8 +347,7 @@ function Linux.Create(config)
         Position = UDim2.new(0, 0, 0, 25),
         Size = UDim2.new(0, config.TabWidth or 110, 1, -25 - profileHeight),
         ZIndex = 2,
-        BorderSizePixel = 0,
-        ClipsDescendants = true
+        BorderSizePixel = 0
     })
 
     local TabHolder = Linux.Instance("ScrollingFrame", {
@@ -382,7 +381,7 @@ function Linux.Create(config)
         Parent = Main,
         BackgroundTransparency = 1,
         Position = UDim2.new(0, config.TabWidth or 110, 0, 25),
-        Size = UDim2.new(1, -(config.TabWidth or 110), 1, -25),
+        Size = UDim2.new(1, -(config.TabWidth or 110), 1, -25 - profileHeight),
         ZIndex = 1,
         BorderSizePixel = 2,
         BorderColor3 = Color3.fromRGB(50, 50, 50)
@@ -390,9 +389,9 @@ function Linux.Create(config)
 
     if config.ShowIconProfile ~= false then
         local ProfileFrame = Linux.Instance("Frame", {
-            Parent = TabsBar,
+            Parent = Main,
             BackgroundTransparency = 1,
-            Size = UDim2.new(1, -5, 0, 28),
+            Size = UDim2.new(0, 250, 0, 28),
             Position = UDim2.new(0, 5, 1, -33),
             ZIndex = 3
         })
@@ -414,8 +413,8 @@ function Linux.Create(config)
         local PlayerNameLabel = Linux.Instance("TextLabel", {
             Parent = ProfileFrame,
             BackgroundTransparency = 1,
-            Size = UDim2.new(1, -31, 0, 28),
-            Position = UDim2.new(0, 31, 0, 0),
+            Size = UDim2.new(0, 200, 0, 28),
+            Position = UDim2.new(0, 30, 0, 0),
             Font = Enum.Font.GothamBold,
             Text = LocalPlayer.Name,
             TextColor3 = Color3.fromRGB(100, 100, 100),
@@ -1278,247 +1277,247 @@ function Linux.Create(config)
             local function SetValue(newValue)
                 local text = tostring(newValue)
                 if #text > MaxLength then
-                    text = string.sub(text, 1, MaxLength)
+                    text = string.sub(text, 1, MaxLength)
                 end
-                TextBox.Text = text
+                TextBox.Text = text
                 UpdateInput()
             end
-            
-            return {
-                Instance = Input,
-                SetValue = SetValue,
-                GetValue = function() return TextBox.Text end
+
+            return {
+                Instance = Input,
+                SetValue = SetValue,
+                GetValue = function() return TextBox.Text end
             }
         end
-        
-        function TabElements.Label(config)
-            elementOrder = elementOrder + 1
-            local LabelFrame = Linux.Instance("Frame", {
-                Parent = ElementContainer,
-                BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-                BorderColor3 = Color3.fromRGB(50, 50, 50),
-                BorderSizePixel = 2,
-                Size = UDim2.new(1, -5, 0, 34),
-                ZIndex = 1,
-                LayoutOrder = elementOrder
+
+        function TabElements.Label(config)
+            elementOrder = elementOrder + 1
+            local LabelFrame = Linux.Instance("Frame", {
+                Parent = ElementContainer,
+                BackgroundColor3 = Color3.fromRGB(19, 19, 19),
+                BorderColor3 = Color3.fromRGB(50, 50, 50),
+                BorderSizePixel = 2,
+                Size = UDim2.new(1, -5, 0, 34),
+                ZIndex = 1,
+                LayoutOrder = elementOrder
             })
-            
-            Linux.Instance("UICorner", {
-                Parent = LabelFrame,
-                CornerRadius = UDim.new(0, 4)
+
+            Linux.Instance("UICorner", {
+                Parent = LabelFrame,
+                CornerRadius = UDim.new(0, 4)
             })
-            
-            local LabelText = Linux.Instance("TextLabel", {
-                Parent = LabelFrame,
-                BackgroundTransparency = 1,
-                Size = UDim2.new(1, -10, 1, 0),
-                Position = UDim2.new(0, 5, 0, 0),
-                Font = Enum.Font.Gotham,
-                Text = config.Text or "Label",
-                TextColor3 = Color3.fromRGB(180, 180, 180),
-                TextSize = 14,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                TextTruncate = Enum.TextTruncate.AtEnd,
-                ZIndex = 1
+
+            local LabelText = Linux.Instance("TextLabel", {
+                Parent = LabelFrame,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(1, -10, 1, 0),
+                Position = UDim2.new(0, 5, 0, 0),
+                Font = Enum.Font.Gotham,
+                Text = config.Text or "Label",
+                TextColor3 = Color3.fromRGB(180, 180, 180),
+                TextSize = 14,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                TextTruncate = Enum.TextTruncate.AtEnd,
+                ZIndex = 1
             })
-            
-            local UpdateConnection = nil
-            local lastUpdate = 0
-            local updateInterval = 0.1
-            
-            local function StartUpdateLoop()
-                if UpdateConnection then
+
+            local UpdateConnection = nil
+            local lastUpdate = 0
+            local updateInterval = 0.1
+
+            local function StartUpdateLoop()
+                if UpdateConnection then
                     UpdateConnection:Disconnect()
                 end
-                if config.UpdateCallback then
-                    UpdateConnection = RunService.Heartbeat:Connect(function()
-                        if not LabelFrame:IsDescendantOf(game) then
+                if config.UpdateCallback then
+                    UpdateConnection = RunService.Heartbeat:Connect(function()
+                        if not LabelFrame:IsDescendantOf(game) then
                             UpdateConnection:Disconnect()
                             return
                         end
-                        local currentTime = tick()
-                        if currentTime - lastUpdate >= updateInterval then
-                            local success, newText = pcall(config.UpdateCallback)
-                            if success and newText ~= nil then
-                                LabelText.Text = tostring(newText)
+                        local currentTime = tick()
+                        if currentTime - lastUpdate >= updateInterval then
+                            local success, newText = pcall(config.UpdateCallback)
+                            if success and newText ~= nil then
+                                LabelText.Text = tostring(newText)
                             end
-                            lastUpdate = currentTime
+                            lastUpdate = currentTime
                         end
                     end)
                 end
             end
-            
-            local function SetText(newText)
-                if config.UpdateCallback then
-                    config.Text = tostring(newText)
+
+            local function SetText(newText)
+                if config.UpdateCallback then
+                    config.Text = tostring(newText)
                 else
-                    LabelText.Text = tostring(newText)
+                    LabelText.Text = tostring(newText)
                 end
             end
-            
-            if config.UpdateCallback then
+
+            if config.UpdateCallback then
                 StartUpdateLoop()
             end
-            
-            return {
-                Instance = LabelFrame,
-                SetText = SetText,
-                GetText = function() return LabelText.Text end
+
+            return {
+                Instance = LabelFrame,
+                SetText = SetText,
+                GetText = function() return LabelText.Text end
             }
         end
-        
-        function TabElements.Section(config)
-            elementOrder = elementOrder + 1
-            local Section = Linux.Instance("Frame", {
-                Parent = ElementContainer,
-                BackgroundTransparency = 1,
-                Size = UDim2.new(1, -5, 0, 24),
-                ZIndex = 1,
-                LayoutOrder = elementOrder,
-                BorderSizePixel = 0
+
+        function TabElements.Section(config)
+            elementOrder = elementOrder + 1
+            local Section = Linux.Instance("Frame", {
+                Parent = ElementContainer,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(1, -5, 0, 24),
+                ZIndex = 1,
+                LayoutOrder = elementOrder,
+                BorderSizePixel = 0
             })
-            
-            Linux.Instance("TextLabel", {
-                Parent = Section,
-                BackgroundTransparency = 1,
-                Size = UDim2.new(1, -10, 1, 0),
-                Position = UDim2.new(0, 5, 0, 0),
-                Font = Enum.Font.SourceSansBold,
-                Text = config.Name,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                TextSize = 18,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                ZIndex = 1
+
+            Linux.Instance("TextLabel", {
+                Parent = Section,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(1, -10, 1, 0),
+                Position = UDim2.new(0, 5, 0, 0),
+                Font = Enum.Font.SourceSansBold,
+                Text = config.Name,
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                TextSize = 18,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                ZIndex = 1
             })
-            
-            return Section
+
+            return Section
         end
-        
-        function TabElements.Paragraph(config)
-            elementOrder = elementOrder + 1
-            local ParagraphFrame = Linux.Instance("Frame", {
-                Parent = ElementContainer,
-                BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-                BorderColor3 = Color3.fromRGB(50, 50, 50),
-                BorderSizePixel = 2,
-                Size = UDim2.new(1, -5, 0, 0),
-                AutomaticSize = Enum.AutomaticSize.Y,
-                ZIndex = 1,
-                LayoutOrder = elementOrder
+
+        function TabElements.Paragraph(config)
+            elementOrder = elementOrder + 1
+            local ParagraphFrame = Linux.Instance("Frame", {
+                Parent = ElementContainer,
+                BackgroundColor3 = Color3.fromRGB(19, 19, 19),
+                BorderColor3 = Color3.fromRGB(50, 50, 50),
+                BorderSizePixel = 2,
+                Size = UDim2.new(1, -5, 0, 0),
+                AutomaticSize = Enum.AutomaticSize.Y,
+                ZIndex = 1,
+                LayoutOrder = elementOrder
             })
-            
-            Linux.Instance("UICorner", {
-                Parent = ParagraphFrame,
-                CornerRadius = UDim.new(0, 4)
+
+            Linux.Instance("UICorner", {
+                Parent = ParagraphFrame,
+                CornerRadius = UDim.new(0, 4)
             })
-            
-            Linux.Instance("TextLabel", {
-                Parent = ParagraphFrame,
-                BackgroundTransparency = 1,
-                Size = UDim2.new(1, -10, 0, 20),
-                Position = UDim2.new(0, 5, 0, 5),
-                Font = Enum.Font.GothamBold,
-                Text = config.Title or "Paragraph",
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                TextSize = 16,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                ZIndex = 1
+
+            Linux.Instance("TextLabel", {
+                Parent = ParagraphFrame,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(1, -10, 0, 20),
+                Position = UDim2.new(0, 5, 0, 5),
+                Font = Enum.Font.GothamBold,
+                Text = config.Title or "Paragraph",
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                TextSize = 16,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                ZIndex = 1
             })
-            
-            local Content = Linux.Instance("TextLabel", {
-                Parent = ParagraphFrame,
-                BackgroundTransparency = 1,
-                Size = UDim2.new(1, -10, 0, 0),
-                Position = UDim2.new(0, 5, 0, 25),
-                Font = Enum.Font.Gotham,
-                Text = config.Content or "Content",
-                TextColor3 = Color3.fromRGB(180, 180, 180),
-                TextSize = 14,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                TextWrapped = true,
-                AutomaticSize = Enum.AutomaticSize.Y,
-                ZIndex = 1
+
+            local Content = Linux.Instance("TextLabel", {
+                Parent = ParagraphFrame,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(1, -10, 0, 0),
+                Position = UDim2.new(0, 5, 0, 25),
+                Font = Enum.Font.Gotham,
+                Text = config.Content or "Content",
+                TextColor3 = Color3.fromRGB(180, 180, 180),
+                TextSize = 14,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                TextWrapped = true,
+                AutomaticSize = Enum.AutomaticSize.Y,
+                ZIndex = 1
             })
-            
-            Linux.Instance("UIPadding", {
-                Parent = ParagraphFrame,
-                PaddingBottom = UDim.new(0, 5)
+
+            Linux.Instance("UIPadding", {
+                Parent = ParagraphFrame,
+                PaddingBottom = UDim.new(0, 5)
             })
-            
-            local function SetTitle(newTitle)
-                ParagraphFrame:GetChildren()[1].Text = tostring(newTitle)
+
+            local function SetTitle(newTitle)
+                ParagraphFrame:GetChildren()[1].Text = tostring(newTitle)
             end
-            
-            local function SetContent(newContent)
-                Content.Text = tostring(newContent)
+
+            local function SetContent(newContent)
+                Content.Text = tostring(newContent)
             end
-            
-            return {
-                Instance = ParagraphFrame,
-                SetTitle = SetTitle,
-                SetContent = SetContent
+
+            return {
+                Instance = ParagraphFrame,
+                SetTitle = SetTitle,
+                SetContent = SetContent
             }
         end
-        
-        function TabElements.Notification(config)
-            elementOrder = elementOrder + 1
-            local NotificationFrame = Linux.Instance("Frame", {
-                Parent = ElementContainer,
-                BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-                BorderColor3 = Color3.fromRGB(50, 50, 50),
-                BorderSizePixel = 2,
-                Size = UDim2.new(1, -5, 0, 34),
-                ZIndex = 1,
-                LayoutOrder = elementOrder
+
+        function TabElements.Notification(config)
+            elementOrder = elementOrder + 1
+            local NotificationFrame = Linux.Instance("Frame", {
+                Parent = ElementContainer,
+                BackgroundColor3 = Color3.fromRGB(19, 19, 19),
+                BorderColor3 = Color3.fromRGB(50, 50, 50),
+                BorderSizePixel = 2,
+                Size = UDim2.new(1, -5, 0, 34),
+                ZIndex = 1,
+                LayoutOrder = elementOrder
             })
-            
-            Linux.Instance("UICorner", {
-                Parent = NotificationFrame,
-                CornerRadius = UDim.new(0, 4)
+
+            Linux.Instance("UICorner", {
+                Parent = NotificationFrame,
+                CornerRadius = UDim.new(0, 4)
             })
-            
-            Linux.Instance("TextLabel", {
-                Parent = NotificationFrame,
-                BackgroundTransparency = 1,
-                Size = UDim2.new(0.5, 0, 1, 0),
-                Position = UDim2.new(0, 5, 0, 0),
-                Font = Enum.Font.Gotham,
-                Text = config.Name,
-                TextColor3 = Color3.fromRGB(180, 180, 180),
-                TextSize = 14,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                ZIndex = 1
+
+            Linux.Instance("TextLabel", {
+                Parent = NotificationFrame,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(0.5, 0, 1, 0),
+                Position = UDim2.new(0, 5, 0, 0),
+                Font = Enum.Font.Gotham,
+                Text = config.Name,
+                TextColor3 = Color3.fromRGB(180, 180, 180),
+                TextSize = 14,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                ZIndex = 1
             })
-            
-            local NotificationText = Linux.Instance("TextLabel", {
-                Parent = NotificationFrame,
-                BackgroundTransparency = 1,
-                Size = UDim2.new(0.5, -10, 1, 0),
-                Position = UDim2.new(0.5, 5, 0, 0),
-                Font = Enum.Font.Gotham,
-                Text = config.Default or "Notification",
-                TextColor3 = Color3.fromRGB(180, 180, 180),
-                TextSize = 14,
-                TextXAlignment = Enum.TextXAlignment.Right,
-                TextTruncate = Enum.TextTruncate.AtEnd,
-                ZIndex = 1
+
+            local NotificationText = Linux.Instance("TextLabel", {
+                Parent = NotificationFrame,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(0.5, -10, 1, 0),
+                Position = UDim2.new(0.5, 5, 0, 0),
+                Font = Enum.Font.Gotham,
+                Text = config.Default or "Notification",
+                TextColor3 = Color3.fromRGB(180, 180, 180),
+                TextSize = 14,
+                TextXAlignment = Enum.TextXAlignment.Right,
+                TextTruncate = Enum.TextTruncate.AtEnd,
+                ZIndex = 1
             })
-            
-            local function SetText(newText)
-                NotificationText.Text = tostring(newText)
+
+            local function SetText(newText)
+                NotificationText.Text = tostring(newText)
             end
-            
-            return {
-                Instance = NotificationFrame,
-                SetText = SetText,
-                GetText = function() return NotificationText.Text end
+
+            return {
+                Instance = NotificationFrame,
+                SetText = SetText,
+                GetText = function() return NotificationText.Text end
             }
         end
-        
-        return TabElements
+
+        return TabElements
     end
-    
-    return LinuxLib
+
+    return LinuxLib
 end
 
-return Linux
+return Linux
