@@ -185,13 +185,10 @@ function Linux.Create(config)
 
     local isMobile = InputService.TouchEnabled and not InputService.KeyboardEnabled
     local uiSize = isMobile and (config.SizeMobile or UDim2.fromOffset(300, 500)) or (config.SizePC or UDim2.fromOffset(550, 355))
-    local transparency = config.Transparency and 0.83 or 0
-    local elementTransparency = config.Transparency and 0.75 or 0
 
     local Main = Linux.Instance("Frame", {
         Parent = LinuxUI,
         BackgroundColor3 = Color3.fromRGB(17, 17, 17),
-        BackgroundTransparency = transparency,
         BorderColor3 = Color3.fromRGB(255, 255, 255),
         BorderSizePixel = 2,
         Size = uiSize,
@@ -209,7 +206,6 @@ function Linux.Create(config)
     local TopBar = Linux.Instance("Frame", {
         Parent = Main,
         BackgroundColor3 = Color3.fromRGB(17, 17, 17),
-        BackgroundTransparency = transparency,
         BorderColor3 = Color3.fromRGB(255, 255, 255),
         BorderSizePixel = 2,
         Size = UDim2.new(1, 0, 0, 25),
@@ -223,7 +219,7 @@ function Linux.Create(config)
 
     local TitleLabel = Linux.Instance("TextLabel", {
         Parent = TopBar,
-        BackgroundTransparency = transparency,
+        BackgroundTransparency = 1,
         Size = UDim2.new(0, 0, 1, 0),
         Position = UDim2.new(0, 5, 0, 0),
         Font = Enum.Font.SourceSansBold,
@@ -239,7 +235,6 @@ function Linux.Create(config)
         local BetaLabel = Linux.Instance("Frame", {
             Parent = TopBar,
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-            BackgroundTransparency = transparency,
             Size = UDim2.new(0, 40, 0, 16),
             Position = UDim2.new(0, TitleLabel.TextBounds.X + 15, 0, 4),
             ZIndex = 2
@@ -279,7 +274,6 @@ function Linux.Create(config)
             ExecutorLabel = Linux.Instance("Frame", {
                 Parent = TopBar,
                 BackgroundColor3 = Color3.fromRGB(28, 28, 28),
-                BackgroundTransparency = transparency,
                 Size = UDim2.new(0, 80, 0, 16),
                 Position = UDim2.new(0, TitleLabel.TextBounds.X + (config.ShowBetaLabel ~= false and 60 or 15), 0, 4),
                 ZIndex = 2
@@ -356,7 +350,7 @@ function Linux.Create(config)
 
     local TabHolder = Linux.Instance("ScrollingFrame", {
         Parent = TabsBar,
-        BackgroundTransparency = transparency,
+        BackgroundTransparency = 1,
         Position = UDim2.new(0, 0, 0, 0),
         Size = UDim2.new(1, 0, 1, 0),
         CanvasSize = UDim2.new(0, 0, 0, 0),
@@ -395,7 +389,7 @@ function Linux.Create(config)
     if config.ShowIconProfile ~= false then
         ProfileFrame = Linux.Instance("Frame", {
             Parent = Main,
-            BackgroundTransparency = transparency,
+            BackgroundTransparency = 1,
             Size = UDim2.new(0, 250, 0, 28),
             Position = UDim2.new(0, 5, 1, -33),
             ZIndex = 3
@@ -478,7 +472,6 @@ function Linux.Create(config)
         local TabBtn = Linux.Instance("TextButton", {
             Parent = TabHolder,
             BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-            BackgroundTransparency = transparency,
             BorderColor3 = Color3.fromRGB(255, 255, 255),
             BorderSizePixel = 2,
             Size = UDim2.new(1, -5, 0, 28),
@@ -539,7 +532,6 @@ function Linux.Create(config)
         local TitleFrame = Linux.Instance("Frame", {
             Parent = Content,
             BackgroundColor3 = Color3.fromRGB(17, 17, 17),
-            BackgroundTransparency = transparency,
             BorderSizePixel = 0,
             Size = UDim2.new(1, -5, 0, 30),
             Position = UDim2.new(0, 5, 0, 0),
@@ -563,7 +555,7 @@ function Linux.Create(config)
 
         local ElementContainer = Linux.Instance("Frame", {
             Parent = TabContent,
-            BackgroundTransparency = transparency,
+            BackgroundTransparency = 1,
             Size = UDim2.new(1, 0, 1, -30),
             Position = UDim2.new(0, 0, 0, 30),
             ZIndex = 1,
@@ -590,7 +582,6 @@ function Linux.Create(config)
                 tab.TitleFrame.Visible = false
                 tab.Text.TextColor3 = Color3.fromRGB(100, 100, 100)
                 tab.Button.BackgroundColor3 = Color3.fromRGB(19, 19, 19)
-                tab.Button.BackgroundTransparency = transparency
                 for _, child in pairs(tab.Button:GetChildren()) do
                     if child:IsA("UIGradient") then
                         child:Destroy()
@@ -604,7 +595,6 @@ function Linux.Create(config)
             TitleFrame.Visible = true
             TabText.TextColor3 = Color3.fromRGB(255, 255, 255)
             TabBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            TabBtn.BackgroundTransparency = transparency
             TabGradient = Linux.Instance("UIGradient", {
                 Parent = TabBtn,
                 Color = ColorSequence.new({
@@ -643,7 +633,6 @@ function Linux.Create(config)
             local BtnFrame = Linux.Instance("Frame", {
                 Parent = ElementContainer,
                 BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-                BackgroundTransparency = elementTransparency,
                 BorderColor3 = Color3.fromRGB(50, 50, 50),
                 BorderSizePixel = 2,
                 Size = UDim2.new(1, -5, 0, 34),
@@ -691,22 +680,22 @@ function Linux.Create(config)
             local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
             Btn.MouseEnter:Connect(function()
-                TweenService:Create(BtnFrame, tweenInfo, {BackgroundColor3 = hoverColor, BackgroundTransparency = elementTransparency}):Play()
+                TweenService:Create(BtnFrame, tweenInfo, {BackgroundColor3 = hoverColor}):Play()
             end)
 
             Btn.MouseLeave:Connect(function()
-                TweenService:Create(BtnFrame, tweenInfo, {BackgroundColor3 = originalColor, BackgroundTransparency = elementTransparency}):Play()
+                TweenService:Create(BtnFrame, tweenInfo, {BackgroundColor3 = originalColor}):Play()
             end)
 
             Btn.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    TweenService:Create(BtnFrame, tweenInfo, {BackgroundColor3 = clickColor, BackgroundTransparency = elementTransparency}):Play()
+                    TweenService:Create(BtnFrame, tweenInfo, {BackgroundColor3 = clickColor}):Play()
                 end
             end)
 
             Btn.InputEnded:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    TweenService:Create(BtnFrame, tweenInfo, {BackgroundColor3 = originalColor, BackgroundTransparency = elementTransparency}):Play()
+                    TweenService:Create(BtnFrame, tweenInfo, {BackgroundColor3 = originalColor}):Play()
                 end
             end)
 
@@ -722,7 +711,6 @@ function Linux.Create(config)
             local Toggle = Linux.Instance("Frame", {
                 Parent = ElementContainer,
                 BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-                BackgroundTransparency = elementTransparency,
                 BorderColor3 = Color3.fromRGB(50, 50, 50),
                 BorderSizePixel = 2,
                 Size = UDim2.new(1, -5, 0, 34),
@@ -840,7 +828,6 @@ function Linux.Create(config)
             local Dropdown = Linux.Instance("Frame", {
                 Parent = ElementContainer,
                 BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-                BackgroundTransparency = elementTransparency,
                 BorderColor3 = Color3.fromRGB(50, 50, 50),
                 BorderSizePixel = 2,
                 Size = UDim2.new(1, -5, 0, 34),
@@ -903,7 +890,6 @@ function Linux.Create(config)
             local DropFrame = Linux.Instance("ScrollingFrame", {
                 Parent = ElementContainer,
                 BackgroundColor3 = Color3.fromRGB(17, 17, 17),
-                BackgroundTransparency = transparency,
                 BorderColor3 = Color3.fromRGB(50, 50, 50),
                 BorderSizePixel = 2,
                 Size = UDim2.new(1, -5, 0, 0),
@@ -969,7 +955,6 @@ function Linux.Create(config)
                         local OptBtn = Linux.Instance("TextButton", {
                             Parent = DropFrame,
                             BackgroundColor3 = Color3.fromRGB(21, 21, 21),
-                            BackgroundTransparency = elementTransparency,
                             BorderColor3 = Color3.fromRGB(50, 50, 50),
                             BorderSizePixel = 2,
                             Size = UDim2.new(1, -5, 0, 25),
@@ -1047,7 +1032,6 @@ function Linux.Create(config)
             local Slider = Linux.Instance("Frame", {
                 Parent = ElementContainer,
                 BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-                BackgroundTransparency = elementTransparency,
                 BorderColor3 = Color3.fromRGB(50, 50, 50),
                 BorderSizePixel = 2,
                 Size = UDim2.new(1, -5, 0, 34),
@@ -1211,7 +1195,6 @@ function Linux.Create(config)
             local Input = Linux.Instance("Frame", {
                 Parent = ElementContainer,
                 BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-                BackgroundTransparency = elementTransparency,
                 BorderColor3 = Color3.fromRGB(50, 50, 50),
                 BorderSizePixel = 2,
                 Size = UDim2.new(1, -5, 0, 34),
@@ -1311,7 +1294,6 @@ function Linux.Create(config)
             local LabelFrame = Linux.Instance("Frame", {
                 Parent = ElementContainer,
                 BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-                BackgroundTransparency = elementTransparency,
                 BorderColor3 = Color3.fromRGB(50, 50, 50),
                 BorderSizePixel = 2,
                 Size = UDim2.new(1, -5, 0, 34),
@@ -1415,7 +1397,6 @@ function Linux.Create(config)
             local ParagraphFrame = Linux.Instance("Frame", {
                 Parent = ElementContainer,
                 BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-                BackgroundTransparency = elementTransparency,
                 BorderColor3 = Color3.fromRGB(50, 50, 50),
                 BorderSizePixel = 2,
                 Size = UDim2.new(1, -5, 0, 0),
@@ -1482,7 +1463,6 @@ function Linux.Create(config)
             local NotificationFrame = Linux.Instance("Frame", {
                 Parent = ElementContainer,
                 BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-                BackgroundTransparency = elementTransparency,
                 BorderColor3 = Color3.fromRGB(50, 50, 50),
                 BorderSizePixel = 2,
                 Size = UDim2.new(1, -5, 0, 34),
