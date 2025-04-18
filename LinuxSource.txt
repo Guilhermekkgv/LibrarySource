@@ -213,12 +213,31 @@ function Linux.Create(config)
         ZIndex = 2
     })
 
+    local SubTitleLabel
+    if config.SubTitle then
+        SubTitleLabel = Linux.Instance("TextLabel", {
+            Parent = TopBar,
+            BackgroundTransparency = 1,
+            Size = UDim2.new(0, 0, 1, 0),
+            Position = UDim2.new(0, TitleLabel.TextBounds.X + 10, 0, 0),
+            Font = Enum.Font.SourceSans,
+            Text = config.SubTitle,
+            TextColor3 = Color3.fromRGB(150, 150, 150),
+            TextSize = 14,
+            TextXAlignment = Enum.TextXAlignment.Left,
+            AutomaticSize = Enum.AutomaticSize.X,
+            ZIndex = 2
+        })
+    end
+
+    local BetaLabel
     if config.ShowBetaLabel ~= false then
-        local BetaLabel = Linux.Instance("Frame", {
+        local betaPosX = SubTitleLabel and (TitleLabel.TextBounds.X + SubTitleLabel.TextBounds.X + 15) or (TitleLabel.TextBounds.X + 15)
+        BetaLabel = Linux.Instance("Frame", {
             Parent = TopBar,
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
             Size = UDim2.new(0, 40, 0, 16),
-            Position = UDim2.new(0, TitleLabel.TextBounds.X + 15, 0, 4),
+            Position = UDim2.new(0, betaPosX, 0, 4),
             ZIndex = 2
         })
 
@@ -388,6 +407,7 @@ function Linux.Create(config)
             TabsBar.Visible = false
             Content.Visible = false
             if ProfileFrame then ProfileFrame.Visible = false end
+            if BetaLabel then BetaLabel.Visible = false end
             MinimizeIcon.Image = "rbxassetid://10734886735"
             isMinimized = true
         else
@@ -395,6 +415,7 @@ function Linux.Create(config)
             TabsBar.Visible = true
             Content.Visible = true
             if ProfileFrame then ProfileFrame.Visible = true end
+            if BetaLabel then BetaLabel.Visible = true end
             MinimizeIcon.Image = "rbxassetid://10734895698"
             isMinimized = false
         end
