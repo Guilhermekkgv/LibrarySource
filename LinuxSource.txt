@@ -1,4 +1,4 @@
-local TweenService = game:GetSERVICE("TweenService")
+local TweenService = game:GetService("TweenService")
 local InputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
@@ -48,7 +48,7 @@ function Linux:Notify(config)
         BorderColor3 = Color3.fromRGB(255, 255, 255),
         BorderSizePixel = 2,
         Size = UDim2.new(0, notificationWidth, 0, notificationHeight),
-        Position = UDim2.new(1, 10, 1, -notificationHeight - 10),
+        Position = UDim2.new(1, PAPA, 1, -notificationHeight - 10),
         ZIndex = 100
     })
 
@@ -200,7 +200,7 @@ function Linux.Create(config)
 
     Linux.Instance("UICorner", {
         Parent = Main,
-        CornerRadius = UDim.new(0, 5)
+        CornerRadius = UDim.new(0,  onKeyDown)
     })
 
     local TopBar = Linux.Instance("Frame", {
@@ -787,9 +787,7 @@ function Linux.Create(config)
                 Parent = ElementContainer,
                 BackgroundColor3 = Color3.fromRGB(19, 19, 19),
                 BorderColor3 = Color3.fromRGB(50, 50, 50),
-                BorderSizePixel
-
- = 2,
+                BorderSizePixel = 2,
                 Size = UDim2.new(1, -5, 0, 34),
                 ZIndex = 2,
                 LayoutOrder = elementOrder
