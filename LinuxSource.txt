@@ -357,10 +357,20 @@ function Linux.Create(config)
         Size = UDim2.new(1, 0, 1, 0),
         CanvasSize = UDim2.new(0, 0, 0, 0),
         AutomaticCanvasSize = Enum.AutomaticSize.Y,
-        ScrollBarThickness = 4,
-        ScrollBarImageColor3 = Color3.fromRGB(100, 100, 100),
+        ScrollBarThickness = 2,
+        ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255),
         ZIndex = 2,
         BorderSizePixel = 0
+    })
+
+    Linux.Instance("UIGradient", {
+        Parent = TabHolder,
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 120, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 139))
+        }),
+        Rotation = 45,
+        Enabled = false
     })
 
     Linux.Instance("UIListLayout", {
@@ -410,17 +420,18 @@ function Linux.Create(config)
             CornerRadius = UDim.new(1, 0)
         })
 
-        Linux.Instance("TextLabel", {
+        local PlayerNameLabel = Linux.Instance("TextLabel", {
             Parent = ProfileFrame,
             BackgroundTransparency = 1,
             Size = UDim2.new(0, 150, 0, 28),
             Position = UDim2.new(0, 33, 0, 0),
-            Font = Enum.Font.Gotham,
+            Font = Enum.Font.GothamBold,
             Text = LocalPlayer.Name,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextSize = 14,
             TextXAlignment = Enum.TextXAlignment.Left,
             TextYAlignment = Enum.TextYAlignment.Center,
+            TextWrapped = true,
             ZIndex = 3
         })
     end
@@ -520,11 +531,22 @@ function Linux.Create(config)
             Size = UDim2.new(1, 0, 1, 0),
             CanvasSize = UDim2.new(0, 0, 0, 0),
             AutomaticCanvasSize = Enum.AutomaticSize.Y,
-            ScrollBarThickness = 0,
+            ScrollBarThickness = 2,
+            ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255),
             Visible = false,
             ZIndex = 1,
             BorderSizePixel = 2,
             BorderColor3 = Color3.fromRGB(50, 50, 50)
+        })
+
+        Linux.Instance("UIGradient", {
+            Parent = TabContent,
+            Color = ColorSequence.new({
+                ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 120, 255)),
+                ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 139))
+            }),
+            Rotation = 45,
+            Enabled = false
         })
 
         local TitleFrame = Linux.Instance("Frame", {
@@ -893,10 +915,21 @@ function Linux.Create(config)
                 Size = UDim2.new(1, -5, 0, 0),
                 CanvasSize = UDim2.new(0, 0, 0, 0),
                 AutomaticCanvasSize = Enum.AutomaticSize.Y,
-                ScrollBarThickness = 0,
+                ScrollBarThickness = 2,
+                ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255),
                 ClipsDescendants = true,
                 ZIndex = 3,
                 LayoutOrder = elementOrder
+            })
+
+            Linux.Instance("UIGradient", {
+                Parent = DropFrame,
+                Color = ColorSequence.new({
+                    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 120, 255)),
+                    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 139))
+                }),
+                Rotation = 45,
+                Enabled = false
             })
 
             Linux.Instance("UICorner", {
