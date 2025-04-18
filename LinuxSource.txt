@@ -220,7 +220,7 @@ function Linux.Create(config)
             BackgroundTransparency = 1,
             Size = UDim2.new(0, 0, 1, 0),
             Position = UDim2.new(0, TitleLabel.TextBounds.X + 10, 0, 0),
-            Font = Enum.Font.SourceSansBold,
+            Font = Enum.Font.Gotham,
             Text = config.SubTitle,
             TextColor3 = Color3.fromRGB(150, 150, 150),
             TextSize = 14,
@@ -267,26 +267,6 @@ function Linux.Create(config)
             ZIndex = 2
         })
     end
-
-    local MinimizeButton = Linux.Instance("TextButton", {
-        Parent = TopBar,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(0, 20, 0, 20),
-        Position = UDim2.new(1, -45, 0, 2),
-        Text = "",
-        ZIndex = 3,
-        AutoButtonColor = false
-    })
-
-    local MinimizeIcon = Linux.Instance("ImageLabel", {
-        Parent = MinimizeButton,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(0, 16, 0, 16),
-        Position = UDim2.new(0.5, -8, 0.5, -8),
-        Image = "rbxassetid://10734895698",
-        ImageColor3 = Color3.fromRGB(255, 255, 255),
-        ZIndex = 3
-    })
 
     local CloseButton = Linux.Instance("TextButton", {
         Parent = TopBar,
@@ -395,31 +375,7 @@ function Linux.Create(config)
         })
     end
 
-    local isMinimized = false
-    local originalSize = Main.Size
-    local originalPos = Main.Position
     local isHidden = false
-
-    MinimizeButton.MouseButton1Click:Connect(function()
-        local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-        if not isMinimized then
-            TweenService:Create(Main, tweenInfo, {Size = UDim2.new(0, 200, 0, 25), Position = UDim2.new(0.5, -100, 0, 0)}):Play()
-            TabsBar.Visible = false
-            Content.Visible = false
-            if ProfileFrame then ProfileFrame.Visible = false end
-            if BetaLabel then BetaLabel.Visible = false end
-            MinimizeIcon.Image = "rbxassetid://10734886735"
-            isMinimized = true
-        else
-            TweenService:Create(Main, tweenInfo, {Size = originalSize, Position = originalPos}):Play()
-            TabsBar.Visible = true
-            Content.Visible = true
-            if ProfileFrame then ProfileFrame.Visible = true end
-            if BetaLabel then BetaLabel.Visible = true end
-            MinimizeIcon.Image = "rbxassetid://10734895698"
-            isMinimized = false
-        end
-    end)
 
     CloseButton.MouseButton1Click:Connect(function()
         LinuxUI:Destroy()
