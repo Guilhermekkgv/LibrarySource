@@ -981,7 +981,7 @@ function Linux.Create(config)
                                 end
                             end
                             spawn(function() Linux:SafeCallback(config.Callback, opt) end)
-                        end)
+                        end
                     end
                 end
                 UpdateDropSize()
@@ -1001,8 +1001,13 @@ function Linux.Create(config)
 
             local function SetOptions(newOptions)
                 Options = newOptions or {}
-                SelectedValue = Options[1] or "None"
-                Selected.Text = tostring(SelectedValue)
+                if #Options > 0 and not table.find(Options, SelectedValue) then
+                    SelectedValue = Options[1]
+                    Selected.Text = tostring(SelectedValue)
+                elseif #Options == 0 then
+                    SelectedValue = "None"
+                    Selected.Text = "None"
+                end
                 PopulateOptions()
             end
 
@@ -1017,6 +1022,49 @@ function Linux.Create(config)
                     end
                     spawn(function() Linux:SafeCallback(config.Callback, value) end)
                 end
+            end
+
+            local UpdateConnection = nil
+            local lastUpdate = 0
+            local updateInterval = 0.1
+
+            local function StartUpdateLoop()
+                if UpdateConnection then
+                    UpdateConnection:Disconnect()
+                end
+                if config.UpdateCallback then
+                    UpdateConnection = RunService.Heartbeat:Connect(function()
+                        if not Dropdown:IsDescendantOf(game) then
+                            UpdateConnection:Disconnect()
+                            return
+                        end
+                        local currentTime = tick()
+                        if currentTime - lastUpdate >= updateInterval then
+                            local success, newOptions = pcall(config.UpdateCallback)
+                            if success and newOptions ~= nil and type(newOptions) == "table" then
+                                local optionsChanged = false
+                                if #newOptions ~= #Options then
+                                    optionsChanged = true
+                                else
+                                    for i, opt in ipairs(newOptions) do
+                                        if opt ~= Options[i] then
+                                            optionsChanged = true
+                                            break
+                                        end
+                                    end
+                                end
+                                if optionsChanged then
+                                    SetOptions(newOptions)
+                                end
+                            end
+                            lastUpdate = currentTime
+                        end
+                    end)
+                end
+            end
+
+            if config.UpdateCallback then
+                StartUpdateLoop()
             end
 
             return {
